@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Body style for Like Page -->
+<body style="background: linear-gradient(to right, lightskyblue, mintcream); font-family: 'Arial', sans-serif;">
+    <h1 style="text-align: center; margin: auto">My Likes</h1>
+    <br>
+    <ul class ="product-list">
+        {% for product in products %}
+            <li class="product-item">
+                <h2 class="product-name">{{ product.product_name }}</h2>
+                <p class="product-details">
+                <strong>Category:</strong> {{ product.product_category }} <br>
+                <strong>Price:</strong> £{{ product.product_price }} <br>
+                <strong>Stock Level:</strong> {{ product.stocklvl }} <br>
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+{% endblock %}

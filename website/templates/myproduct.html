@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- Body style for My Product Page -->
+<body style="background: linear-gradient(to right, lightskyblue, mintcream); font-family: 'Arial', sans-serif;">
+
+<div class="container mt-3">
+    <h1 class="text-center mb-5">My Product List</h1>
+
+    <!-- Shows Product Details -->
+    <ul class="product-list">
+        {% for product in user_products %}
+            <li class="product-item">
+                <h2 class="product-name">{{ product.product_name }}</h2>
+                <p class="product-details">
+                    <strong>Category:</strong> {{ product.product_category }} <br>
+                    <strong>Price:</strong> £{{product.product_price}} <br>
+                    <strong>Stock Level:</strong> {{ product.stocklvl }} <br>
+                </p>
+
+                <!-- Allows user to update the stock level of the product -->
+                <div class="updateaction">
+                    <form method="POST" action="{{url_for('userview.updatestcklvl', product_id=product.id)}}">
+                        <label for="updatestck">Update Stock Level:</label>
+                        <input type="number" name="updatestck" id="updatestck" required>
+                        <button type="submit" class="btn-update">Update Stock</button>
+                    </form>
+
+                    <!-- Allows user to delete the product -->
+                    <form method="POST" action="{{url_for('userview.deleteproduct', product_id=product.id)}}">
+                        <button type="submit" class="btn-delete">Delete</button>
+                    </form>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Allows user to add new products -->
+    <div class="text-center mt-5">
+        <h2>Add a New Product</h2>
+        <form method="POST" action="{{ url_for('userview.adduserproduct') }}" class="add-product-form">
+            <label for="product_name">Product Name:</label>
+            <input type="text" name="product_name" id="product_name" required>
+            <br>
+            <label for="product_category">Category:</label>
+            <input type="text" name="product_category" id="product_category" required>
+            <br>
+            <label for="product_price">Price:</label>
+            <input type="number" name="product_price" id="product_price" step="0.01" required>
+            <br>
+            <button type="submit" class="btn-add">Add Product</button>
+        </form>
+    </div>
+</div>
+
+
+
+</body>
+{% endblock %}

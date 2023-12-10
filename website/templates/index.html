@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+<!-- Body style for Home Page -->
+    <body style="background: linear-gradient(to right, lightskyblue, mintcream); font-family:'Arial', sans-serif;">
+        <h1 style="text-align: center; margin: auto">Welcome, {{name}}</h1>
+        <br>
+        <h2>Available Products:</h2>
+
+        <!-- Shows Product details -->
+        <ul class="product-list">
+            {% for product in products %}
+            <li class="product-item">
+                <h2 class="product-name">{{product.product_name}}</h2>
+                    <strong>Category:</strong> {{product.product_category}} <br>
+                    <strong>Price:</strong> £{{product.product_price}}  <br>
+                    <strong>Stock Level:</strong> {{product.stocklvl}} <br>
+                    <strong>Created By:</strong> {{product.owner.name}}
+
+                    <div class="btn-group">
+                    {% if product.stocklvl > 0 %}
+                        {% if session['liked_product_' + product.id|string] %}
+                            <button class="btn btn-outline-danger btn-layout unlike-button" data-product-id="{{product.id}}">&#x1F494; Unlike</button>
+                        {% else %}
+                            <button class="btn btn-outline-success btn-layout like-button" data-product-id="{{product.id}}">❤️ Like</button>
+                        {% endif %}
+                        <a class="btn btn-outline-success btn-layout btn-bucketlist" href="{{url_for('userview.add_to_bucket_list', product_id=product.id)}}">Add to Bucket List</a>
+                    {% else %}
+                        <p class="out-of-stock-message">(Out of Stock)</p>
+                    {% endif %}
+                    </div>
+
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Does AJAX Function -->
+        <!-- Like & Unlike button function -->
+        <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+        <script>
+            $(document).ready(function (){
+                $('.like-button').on('click',function (){
+                    const button = $(this);
+                    const productId = $(this).data('product-id');
+                    if (!productId){
+                        console.error('Product ID is missing');
+                        return;
+                    }
+                    console.log('productId: ', productId);
+                    $.ajax({
+                        type:"POST",
+                        url: '/like_product/' + productId,
+                        success: function(response) {
+                            console.log('Success Response:',response);
+                            button.toggleClass('like-button unlike-button');
+                            button.text(response.message.includes('unliked')?'❤️Like':'💔Unlike');
+                            alert(response.message);
+                        },
+                        error: function (error) {
+                            console.error('Error:', error)
+                            alert('Error occurred. Please try again');
+                        }
+                    });
+                });
+
+                $(document).on('click', '.unlike-button', function(){
+                    const button = $(this);
+                    const productId = button.data('product-id');
+                    if(!productId) {
+                        console.error('Product ID is missing');
+                        return;
+                    }
+
+                    $.ajax({
+                        type: "POST",
+                        url: '/like_product/' + productId,
+                        success: function(response){
+                            console.log('Success Response: ', response);
+                            button.toggleClass('like-button unlike-button');
+                            button.text(response.message.includes('unliked')?'❤️Like':'💔Unlike');
+                            alert(response.message);
+                        },
+                        error: function(error){
+                            console.error('Error: ', error);
+                            alert('Error occurred. Please try again');
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+
+</html>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html lang="en">
+<!-- Heading style for Register Page -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale">
+    <title>Register</title>
+</head>
+
+<!-- Body style for Register Page -->
+<body style="background: linear-gradient(to right, #ffc8c8, #dddddd)">
+    <h1>Register Page</h1>
+    <br/>
+    <!-- Form for User Information -->
+    <form method="POST">
+        <div class = "form-group">
+            <label for="student">Student ID</label>
+            <input type="number"
+                   class="form-control"
+                   id="student"
+                   name="student"
+                   placeholder="Enter Student ID"
+            />
+        </div>
+        <div class = "form-group">
+            <label for="name">Name</label>
+            <input type="text"
+                   class="form-control"
+                   id="name"
+                   name="name"
+                   placeholder="Enter name"
+            />
+        </div>
+        <div class = "form-group">
+            <label for="password1">Password</label>
+            <input type="password"
+                   class="form-control"
+                   id="password1"
+                   name="password1"
+                   placeholder="Enter password"
+            />
+        </div>
+        <div class = "form-group">
+            <label for="password2">Confirm Password</label>
+            <input type="password"
+                   class="form-control"
+                   id="password2"
+                   name="password2"
+                   placeholder="Confirm password"
+            />
+        </div>
+        <br/>
+        <button type="submit" class="btn-signupconfirm">Submit</button>
+    </form>
+</html>
+
+{% endblock %}
